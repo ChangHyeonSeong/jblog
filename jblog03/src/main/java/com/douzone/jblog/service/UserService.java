@@ -17,5 +17,11 @@ public class UserService {
 	public boolean join(UserVo vo) {
 		return userRepository.insert(vo);
 	}
+
+	public UserVo getUser(String id) {
+		return userRepository.findById(id);
+	}
+
+
 	
 }

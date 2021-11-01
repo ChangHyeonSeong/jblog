@@ -14,7 +14,7 @@ public class UserVo {
 	private String name;
 	
 	@NotEmpty
-	@Length(min=2, max=8)
+	@Length(min=4, max=16)
 	private String password;
 	private String joinDate;
 	

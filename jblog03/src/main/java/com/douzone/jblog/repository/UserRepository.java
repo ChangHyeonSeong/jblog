@@ -16,5 +16,9 @@ public class UserRepository {
 		int count = sqlSession.insert("user.insert", vo);
 		return count == 1;
 	}
+
+	public UserVo findById(String id) {
+		return sqlSession.selectOne("user.findById",id);
+	}
 	
 }
