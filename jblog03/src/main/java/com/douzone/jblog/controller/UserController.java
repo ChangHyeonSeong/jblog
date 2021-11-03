@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.douzone.jblog.service.UserService;
 import com.douzone.jblog.vo.UserVo;
 
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -34,6 +35,7 @@ public class UserController {
 	public String join(@ModelAttribute @Valid UserVo vo, BindingResult result, Model model) {
 		if(result.hasErrors()) {
 			Map<String, Object> map = result.getModel(); // userVo 이름의 객체로 담겨있다
+//			System.out.println("---------------------        " + map);
 			model.addAttribute(map);
 			return "user/join";
 		}

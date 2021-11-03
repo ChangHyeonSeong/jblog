@@ -17,7 +17,7 @@ a:hover 		{ color:#dc143c; text-decoration:none; font-weight:bold; }
 .center-content .logo							{ width:163px; height:104px;  margin:20px auto; text-indent:-100000px; font-size:0 }
 .center-content .menu							{ text-align:center; height:20px; margin:0 auto }
 .center-content .menu li						{ display:inline; padding-left:20px }
-.center-content .menu li:first-child			{ margin!-left:70px }
+.center-content .menu li:first-child			{ margin-left:70px }
 .center-content .menu li a						{ font-size:1.2em }
 
 .center-content form,
@@ -41,8 +41,8 @@ a:hover 		{ color:#dc143c; text-decoration:none; font-weight:bold; }
 
 .welcome-message								{ height: 200px }
 .welcome-message span							{ font-size:1.2em; font-wight:bold; color:#777 }
-.welcome-message span:before					{ content: url(/jblog/assets/images/bul1.gif);}
-.welcome-message span:after						{ content: url(/jblog/assets/images/bul2.gif);}		
+.welcome-message span:before					{ content: url(/jblog03/assets/images/bul1.gif);}
+.welcome-message span:after						{ content: url(/jblog03/assets/images/bul2.gif);}		
 
 
 
