@@ -43,12 +43,19 @@
 	<!-- Intercaptor -->
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/user/login" />
+			<mvc:mapping path="/user/auth" />
 			<bean class="com.douzone.jblog.security.LoginInterceptor" />
 		</mvc:interceptor>
 		<mvc:interceptor>
 			<mvc:mapping path="/user/logout" />
 			<bean class="com.douzone.jblog.security.LogoutInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/user/auth" />
+			<mvc:exclude-mapping path="/user/logout" />
+			<mvc:exclude-mapping path="/assets/**" />
+			<bean class="com.douzone.jblog.security.AuthInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
 
