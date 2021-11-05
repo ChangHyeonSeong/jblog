@@ -50,13 +50,6 @@
 			<mvc:mapping path="/user/logout" />
 			<bean class="com.douzone.jblog.security.LogoutInterceptor" />
 		</mvc:interceptor>
-		<mvc:interceptor>
-			<mvc:mapping path="/**" />
-			<mvc:exclude-mapping path="/user/auth" />
-			<mvc:exclude-mapping path="/user/logout" />
-			<mvc:exclude-mapping path="/assets/**" />
-			<bean class="com.douzone.jblog.security.AuthInterceptor" />
-		</mvc:interceptor>
 	</mvc:interceptors>
 
 	<!-- ViewResolver 설정 -->
@@ -91,8 +84,8 @@
 	</bean>
     
 	<!-- mvc url-resource mapping -->
-	<mvc:resources mapping="gallery/images/**"
-		location="file:/mysite-upload-images/" />
+	<mvc:resources mapping="/logoImgs/**"
+		location="file:/blog-logo-imeges/" />
 
 	<context:annotation-config />
 	<context:component-scan base-package="com.douzone.jblog.controller, com.douzone.jblog.exception" />

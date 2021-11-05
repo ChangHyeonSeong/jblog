@@ -9,47 +9,21 @@
 		]]>
 	</insert>
 	
-	<select id="findById" parameterType="string" resultType="uservo">
+	<select id="findById" parameterType="string" resultType="blogvo">
 		<![CDATA[
-		select id, name, password, join_date as joinDate
-		from user
+		select id, title, logo
+		from blog
 		where id = #{id }
 		]]>
 	</select>
 	
-	<select id="findByIdAndPassword" parameterType="map" resultType="uservo">
+	<update id ="update" parameterType="blogvo">
 		<![CDATA[
-		select id, name, password, join_date as joinDate
-		from user 
-		where id=#{id }
-		 and password=#{password }
-		]]>
-	</select>
-	
-	<select id="findByNo" parameterType="long" resultType="uservo">
-		<![CDATA[
-		select name, email, password, gender
-		from user
-		where no = #{no }
-		]]>
-	</select>
-	
-	
-	<update id ="update" parameterType="uservo">
-		<![CDATA[
-		update user
-		set name = #{name },  gender=#{gender }
-		where no = #{no }
+		update blog
+		set title = #{title },  logo = #{logo }
+		where id = #{id }
 		]]>
 	</update>
 	
-	<delete id ="delete" parameterType="uservo">
-		<![CDATA[
-		delete
-		from guestbook
-		where no = #{no }
-		and password = #{password }
-		]]>
-	</delete>
 	
 </mapper>

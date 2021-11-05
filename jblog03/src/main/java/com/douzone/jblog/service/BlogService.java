@@ -25,6 +25,16 @@ public class BlogService {
 		
 		return blogRepository.insert(blogVo);
 	}
+
+	public BlogVo getBlog(String blogId) {
+		return blogRepository.findById(blogId);
+	}
+
+	public boolean updateBlog(BlogVo blogVo) {
+		return blogRepository.update(blogVo);
+	}
+
+	
 	
 	
 }

@@ -15,15 +15,16 @@
 		<div id="wrapper">
 			<div id="content" class="full-screen">
 				<c:import url="/WEB-INF/views/includes/blog-admin-menu.jsp" />
-				<form method="post" action="${pageContext.request.contextPath}/${authUser.id }/admin/basic">
+				<form method="post" action="${pageContext.request.contextPath}/${authUser.id }/admin/basic" enctype="multipart/form-data">
+				    <input name="logo" type="hidden" value="${blogVo.logo }">
 	 		      	<table class="admin-config">
 			      		<tr>
 			      			<td class="t">블로그 제목</td>
-			      			<td><input type="text" size="40" name="title"></td>
+			      			<td><input type="text" size="40" name="title" value="${blogVo.title }"></td>
 			      		</tr>
 			      		<tr>
 			      			<td class="t">로고이미지</td>
-			      			<td><img src="${pageContext.request.contextPath}/assets/images/spring-logo.jpg"></td>      			
+			      			<td><img src="${pageContext.request.contextPath}${blogVo.logo }"></td>      			
 			      		</tr>
 			      		<tr>
 			      			<td class="t">&nbsp;</td>

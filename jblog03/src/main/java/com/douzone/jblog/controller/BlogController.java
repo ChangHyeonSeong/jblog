@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.douzone.jblog.security.AuthUser;
 import com.douzone.jblog.service.BlogService;
+import com.douzone.jblog.service.FileUploadService;
 import com.douzone.jblog.vo.BlogVo;
 import com.douzone.jblog.vo.UserVo;
 
@@ -21,41 +22,52 @@ import com.douzone.jblog.vo.UserVo;
 public class BlogController {
 	@Autowired
 	private BlogService blogService;
+	@Autowired
+	private FileUploadService fileUploadService;
+	
 	//"/{catergoryNo}","/{catergoryNo}/{postNo}"
 	@GetMapping("")
 	public String blog(
 			Model model,
-			@PathVariable("id") String blogId, 
+			@PathVariable(value = "id", required = true) String blogId,
 			@ModelAttribute @AuthUser UserVo authUser) {
-		
-		
-		
+		if(blogId == null) {
+			return "redirect:/";
+		}
+		BlogVo blogVo = blogService.getBlog(blogId);
+		model.addAttribute("blogVo", blogVo);
 		return "blog/blog-main";
 	}
 	
 	@GetMapping("/admin/basic")
-	public String adminBasic(@ModelAttribute @AuthUser UserVo authUser) {
-		
+	public String adminBasic(Model model,@ModelAttribute @AuthUser UserVo authUser) {
+		BlogVo blogVo = blogService.getBlog(authUser.getId());
+		model.addAttribute("blogVo", blogVo);
 		return "blog/blog-admin-basic";
 	}
 	
 	@PostMapping("/admin/basic")
 	public String adminBasic(
 			Model model, BlogVo blogVo,
-			@RequestParam(value="file") MultipartFile multipartFile,
-			@AuthUser UserVo authUser) {
+			@RequestParam(value="logo-file") MultipartFile multipartFile,
+			@ModelAttribute @AuthUser UserVo authUser) {
+		String logo = fileUploadService.restoreImg(multipartFile);
+		if(logo != null ) {
+			blogVo.setLogo(logo);
+		}
+		blogService.updateBlog(blogVo);
 		
-		return "blog/blog-admin-basic";
+		return "redirect:/" + authUser.getId();
 	}
 	
 	@GetMapping("/admin/category")
-	public String adminCategory(@AuthUser UserVo authUser) {
+	public String adminCategory(@ModelAttribute @AuthUser UserVo authUser) {
 	
 		return "blog/blog-admin-category";
 	}
 	
 	@GetMapping("/admin/write")
-	public String adminWrite(@AuthUser UserVo authUser) {
+	public String adminWrite(@ModelAttribute @AuthUser UserVo authUser) {
 	
 		return "blog/blog-admin-write";
 	}
