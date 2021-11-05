@@ -1,8 +1,11 @@
 package com.douzone.jblog.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,8 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.douzone.jblog.security.AuthUser;
 import com.douzone.jblog.service.BlogService;
+import com.douzone.jblog.service.CategoryService;
 import com.douzone.jblog.service.FileUploadService;
 import com.douzone.jblog.vo.BlogVo;
+import com.douzone.jblog.vo.CategoryVo;
 import com.douzone.jblog.vo.UserVo;
 
 @Controller
@@ -24,6 +29,8 @@ public class BlogController {
 	private BlogService blogService;
 	@Autowired
 	private FileUploadService fileUploadService;
+	@Autowired
+	private CategoryService categoryService;
 	
 	//"/{catergoryNo}","/{catergoryNo}/{postNo}"
 	@GetMapping("")
@@ -36,8 +43,11 @@ public class BlogController {
 		}
 		BlogVo blogVo = blogService.getBlog(blogId);
 		model.addAttribute("blogVo", blogVo);
+		model.addAttribute("blogId", blogId);
 		return "blog/blog-main";
 	}
+	
+	//admin Auth 구현 해야함
 	
 	@GetMapping("/admin/basic")
 	public String adminBasic(Model model,@ModelAttribute @AuthUser UserVo authUser) {
@@ -61,14 +71,39 @@ public class BlogController {
 	}
 	
 	@GetMapping("/admin/category")
-	public String adminCategory(@ModelAttribute @AuthUser UserVo authUser) {
-	
+	public String adminCategory(Model model,@ModelAttribute @AuthUser UserVo authUser) {
+		BlogVo blogVo = blogService.getBlog(authUser.getId());
+		model.addAttribute("blogVo", blogVo);
+		
+		List<CategoryVo> list =  categoryService.getCategory(authUser.getId());
+		model.addAttribute("list", list);
 		return "blog/blog-admin-category";
 	}
 	
-	@GetMapping("/admin/write")
-	public String adminWrite(@ModelAttribute @AuthUser UserVo authUser) {
+	@PostMapping("/admin/category")
+	public String adminCategory(Model model, CategoryVo categoryVo,
+			@ModelAttribute @AuthUser UserVo authUser) {
+		
+		categoryService.addCategory(categoryVo);
+		
+		return "redirect:/" + authUser.getId() + "/admin/category";
+	}
 	
+	@DeleteMapping("/admin/category/{no}")
+	public String adminCategory(Model model,
+			@PathVariable(value="no") Long no,
+			@ModelAttribute @AuthUser UserVo authUser) {
+		
+		categoryService.deleteCategory(no);
+		
+		return "redirect:/" + authUser.getId() + "/admin/category";
+	}
+	
+
+	@GetMapping("/admin/write")
+	public String adminWrite(Model model,@ModelAttribute @AuthUser UserVo authUser) {
+		BlogVo blogVo = blogService.getBlog(authUser.getId());
+		model.addAttribute("blogVo", blogVo);
 		return "blog/blog-admin-write";
 	}
 	
