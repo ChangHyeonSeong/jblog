@@ -26,5 +26,12 @@ public class CategoryService {
 		return categoryRepository.delete(no);
 	}
 
+	public boolean addInitialDataCategory(String id) {
+		CategoryVo categoryVo = new CategoryVo();
+		categoryVo.setBlogId(id);
+		categoryVo.setName("미분류");
+		return addCategory(categoryVo);
+	}
+
 
 }

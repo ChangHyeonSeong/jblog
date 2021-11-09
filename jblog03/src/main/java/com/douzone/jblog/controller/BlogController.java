@@ -1,7 +1,6 @@
 package com.douzone.jblog.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -62,6 +61,9 @@ public class BlogController {
 			PostVo lastPostVo = postService.getLastPostVo();
 			
 			List<PostVo> postList = postService.getAllByCategoryNo(blogId, lastPostVo.getCategoryNo());
+			if(postList.size() == 0) {
+				return "blog/blog-main";
+			}
 			PostVo postVo = postList.get(0);
 			model.addAttribute("postList", postList);
 			model.addAttribute("postVo", postVo);
@@ -74,6 +76,9 @@ public class BlogController {
 			List<PostVo> postList = postService.getAllByCategoryNo(blogId,catergoryNo);
 			model.addAttribute("postList", postList);
 			
+			if(postList.size() == 0) {
+				return "blog/blog-main";
+			}
 			PostVo postVo = postList.get(0);
 			model.addAttribute("postVo", postVo);
 			

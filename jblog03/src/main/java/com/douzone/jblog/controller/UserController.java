@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
 import com.douzone.jblog.service.BlogService;
+import com.douzone.jblog.service.CategoryService;
 import com.douzone.jblog.service.UserService;
 import com.douzone.jblog.vo.UserVo;
 
@@ -27,6 +27,8 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private BlogService blogService;
+	@Autowired
+	private CategoryService categoryService;
 	@GetMapping("/join")
 	public String join(@ModelAttribute UserVo vo) {
 		return "user/join";
@@ -44,6 +46,7 @@ public class UserController {
 		}
 		userService.join(vo);
 		blogService.createBlog(vo);
+		categoryService.addInitialDataCategory(vo.getId());
 		return "redirect:/user/joinsuccess";
 	}
 	
