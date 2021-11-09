@@ -80,7 +80,6 @@ public class BlogController {
 			return "blog/blog-main";
 		}
 		
-		
 		// id/catergoryNo/postNo
 		List<PostVo> postList = postService.getAllByCategoryNo(blogId,catergoryNo);
 		model.addAttribute("postList", postList);
