@@ -1,6 +1,7 @@
 package com.douzone.jblog.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,19 +53,23 @@ public class BlogController {
 		model.addAttribute("blogId", blogId);
 		
 		
-		List<CategoryVo> categoryList =  categoryService.getCategory(authUser.getId());
+		List<CategoryVo> categoryList =  categoryService.getCategory(blogId);
 		model.addAttribute("categoryList", categoryList);
 
-		
+		//id 만 넘어올때
 		if (catergoryNo == null) {
-			List<PostVo> postList = postService.getAll(blogId);
-			model.addAttribute("postList", postList);
+			//List<PostVo> postAllList = postService.getAll(blogId);
+			PostVo lastPostVo = postService.getLastPostVo();
 			
+			List<PostVo> postList = postService.getAllByCategoryNo(blogId, lastPostVo.getCategoryNo());
 			PostVo postVo = postList.get(0);
+			model.addAttribute("postList", postList);
 			model.addAttribute("postVo", postVo);
 			
 			return "blog/blog-main";
 		}
+		
+		// id/catergoryNo
 		if (postNo == null) {
 			List<PostVo> postList = postService.getAllByCategoryNo(blogId,catergoryNo);
 			model.addAttribute("postList", postList);
@@ -75,6 +80,8 @@ public class BlogController {
 			return "blog/blog-main";
 		}
 		
+		
+		// id/catergoryNo/postNo
 		List<PostVo> postList = postService.getAllByCategoryNo(blogId,catergoryNo);
 		model.addAttribute("postList", postList);
 		

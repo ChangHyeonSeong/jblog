@@ -29,4 +29,8 @@ public class PostRepository {
 		map.put("no", catergoryNo);
 		return sqlSession.selectList("post.findAllByCategoryNo", map);
 	}
+
+	public PostVo findLastPostVo() {
+		return sqlSession.selectOne("post.findLastPostVo");
+	}
 }

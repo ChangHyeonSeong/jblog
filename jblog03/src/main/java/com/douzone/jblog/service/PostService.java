@@ -24,4 +24,8 @@ public class PostService {
 	public List<PostVo> getAllByCategoryNo(String blogId, Long catergoryNo) {
 		return postRepository.findAllByCategoryNo(blogId,catergoryNo);
 	}
+
+	public PostVo getLastPostVo() {
+		return postRepository.findLastPostVo();
+	}
 }
