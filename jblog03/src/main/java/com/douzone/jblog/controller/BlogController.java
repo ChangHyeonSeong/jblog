@@ -18,12 +18,14 @@ import com.douzone.jblog.security.AuthUser;
 import com.douzone.jblog.service.BlogService;
 import com.douzone.jblog.service.CategoryService;
 import com.douzone.jblog.service.FileUploadService;
+import com.douzone.jblog.service.PostService;
 import com.douzone.jblog.vo.BlogVo;
 import com.douzone.jblog.vo.CategoryVo;
+import com.douzone.jblog.vo.PostVo;
 import com.douzone.jblog.vo.UserVo;
 
 @Controller
-@RequestMapping("/{id:(?!main|assets|user|admin).*}")
+@RequestMapping("/{id:(?!main|assets|user|logoImgs).*}")
 public class BlogController {
 	@Autowired
 	private BlogService blogService;
@@ -31,19 +33,60 @@ public class BlogController {
 	private FileUploadService fileUploadService;
 	@Autowired
 	private CategoryService categoryService;
+	@Autowired
+	private PostService postService;
 	
-	//"/{catergoryNo}","/{catergoryNo}/{postNo}"
-	@GetMapping("")
-	public String blog(
+	@GetMapping({"","/{catergoryNo:(?!admin).*}","/{catergoryNo:(?!admin).*}/{postNo}"})
+	public String blogMain(
 			Model model,
 			@PathVariable(value = "id", required = true) String blogId,
+			@PathVariable(value = "catergoryNo", required = false) Long catergoryNo,
+			@PathVariable(value = "postNo", required = false) Long postNo,
 			@ModelAttribute @AuthUser UserVo authUser) {
+		
 		if(blogId == null) {
 			return "redirect:/";
 		}
 		BlogVo blogVo = blogService.getBlog(blogId);
 		model.addAttribute("blogVo", blogVo);
 		model.addAttribute("blogId", blogId);
+		
+		
+		List<CategoryVo> categoryList =  categoryService.getCategory(authUser.getId());
+		model.addAttribute("categoryList", categoryList);
+
+		
+		if (catergoryNo == null) {
+			List<PostVo> postList = postService.getAll(blogId);
+			model.addAttribute("postList", postList);
+			
+			PostVo postVo = postList.get(0);
+			model.addAttribute("postVo", postVo);
+			
+			return "blog/blog-main";
+		}
+		if (postNo == null) {
+			List<PostVo> postList = postService.getAllByCategoryNo(blogId,catergoryNo);
+			model.addAttribute("postList", postList);
+			
+			PostVo postVo = postList.get(0);
+			model.addAttribute("postVo", postVo);
+			
+			return "blog/blog-main";
+		}
+		
+		List<PostVo> postList = postService.getAllByCategoryNo(blogId,catergoryNo);
+		model.addAttribute("postList", postList);
+		
+		PostVo postVo = null;
+		for(PostVo vo : postList) {
+			if(vo.getNo() == postNo) {
+				postVo = vo;
+				break;
+			}
+		}
+		model.addAttribute("postVo", postVo);
+		
 		return "blog/blog-main";
 	}
 	
@@ -101,10 +144,28 @@ public class BlogController {
 	
 
 	@GetMapping("/admin/write")
-	public String adminWrite(Model model,@ModelAttribute @AuthUser UserVo authUser) {
+	public String adminWrite(Model model,
+			@ModelAttribute @AuthUser UserVo authUser) {
 		BlogVo blogVo = blogService.getBlog(authUser.getId());
 		model.addAttribute("blogVo", blogVo);
+		
+		List<CategoryVo> list =  categoryService.getCategory(authUser.getId());
+		model.addAttribute("list", list);
 		return "blog/blog-admin-write";
 	}
+	
+	@PostMapping("/admin/write")
+	public String adminWrite(Model model,PostVo postVo,
+			@ModelAttribute @AuthUser UserVo authUser) {
+		
+		postService.addPost(postVo);
+		
+		BlogVo blogVo = blogService.getBlog(authUser.getId());
+		model.addAttribute("blogVo", blogVo);
+		List<CategoryVo> list =  categoryService.getCategory(authUser.getId());
+		model.addAttribute("list", list);
+		return "blog/blog-admin-write";
+	}
+
 	
 }

@@ -26,4 +26,5 @@ public class CategoryRepository {
 		return sqlSession.delete("category.delete", no) == 1;
 	}
 
+
 }
