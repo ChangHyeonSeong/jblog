@@ -24,10 +24,28 @@ desc post;
 
 insert into post values(null, 'test', 'test', now(), 10);
 
-select * from post;
+select * from post
+order by reg_date desc;
+
+select no, title, contents, reg_date as regDate, category_no as categoryNo 
+from post
+order by reg_date desc
+limit 0, 1;
+
+select no, title, contents, date_format(reg_date, '%Y/%m/%d %h:%i:%s') as regDate, category_no as categoryNo 
+from post
+order by reg_date desc
+limit 0, 1;
+
 delete from post where no = 1;
 
-select p.no, p.title, p.contents, p.reg_date as regDate, p.category_no as catgoryNo
+select p.no, p.title, p.contents, date_format(p.reg_date, '%Y/%m/%d %h:%m:%s') as regDate, p.category_no as catgoryNo
 from post p join category c on p.category_no = c.no
 where c.blog_id = 'eogkdfh@gmail.com'
+order by regDate desc;
+
+select p.no, p.title, p.contents, date_format(p.reg_date, '%Y/%m/%d') as regDate, p.category_no as catgoryNo
+from post p join category c on p.category_no = c.no
+where c.blog_id = 'eogkdfh@gmail.com'
+and p.category_no = 5
 order by regDate desc;
