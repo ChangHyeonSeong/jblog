@@ -44,7 +44,18 @@
 			<h2>카테고리</h2>
 			<ul>
 				<c:forEach items="${categoryList }" var="categoryVo" >
-					<li><a href="${pageContext.request.contextPath}/${blogId }/${categoryVo.no }">${categoryVo.name }</a></li>
+					<li>
+						<a href="${pageContext.request.contextPath}/${blogId }/${categoryVo.no }">
+							<c:choose>
+								<c:when test='${categoryVo.name == "미분류" }'>
+									기타
+								</c:when>
+								<c:otherwise>
+									${categoryVo.name }
+								</c:otherwise>
+							</c:choose>
+						</a>
+					</li>
 				</c:forEach>
 			</ul>
 		</div>

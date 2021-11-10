@@ -148,7 +148,7 @@ public class BlogController {
 			@PathVariable(value="no") Long no,
 			@ModelAttribute @AuthUser UserVo authUser) {
 		
-		categoryService.deleteCategory(no);
+		categoryService.deleteCategory(authUser.getId(),no);
 		
 		return "redirect:/" + authUser.getId() + "/admin/category";
 	}

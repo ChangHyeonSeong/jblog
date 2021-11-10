@@ -22,7 +22,11 @@ public class CategoryService {
 		return categoryRepository.insert(categoryVo);
 	}
 
-	public boolean deleteCategory(Long no) {
+	public boolean deleteCategory(String id, Long no) {
+		List<CategoryVo> list = getCategory(id);
+		if(list.size() == 1) {
+			return false;
+		}
 		return categoryRepository.delete(no);
 	}
 
