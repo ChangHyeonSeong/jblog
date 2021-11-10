@@ -14,6 +14,7 @@
 		select c.no, c.name, c.desc, c.blog_id as blogId, (select count(*) from post where category_no = c.no) as postCount 
 		from category c
 		where blog_id = #{id }
+		order by c.no desc
 		]]>
 	</select>
 	
