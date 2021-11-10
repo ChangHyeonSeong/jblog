@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.douzone.jblog.security.Auth;
 import com.douzone.jblog.security.AuthUser;
 import com.douzone.jblog.service.BlogService;
 import com.douzone.jblog.service.CategoryService;
@@ -25,7 +26,7 @@ import com.douzone.jblog.vo.PostVo;
 import com.douzone.jblog.vo.UserVo;
 
 @Controller
-@RequestMapping("/{id:(?!main|assets|user|logoImgs).*}")
+@RequestMapping("/{id:(?!main|assets|user|blog|logoImgs).*}")
 public class BlogController {
 	@Autowired
 	private BlogService blogService;
@@ -101,8 +102,7 @@ public class BlogController {
 		return "blog/blog-main";
 	}
 	
-	//admin Auth 구현 해야함
-	
+	@Auth
 	@GetMapping("/admin/basic")
 	public String adminBasic(Model model,@ModelAttribute @AuthUser UserVo authUser) {
 		BlogVo blogVo = blogService.getBlog(authUser.getId());
@@ -110,6 +110,7 @@ public class BlogController {
 		return "blog/blog-admin-basic";
 	}
 	
+	@Auth
 	@PostMapping("/admin/basic")
 	public String adminBasic(
 			Model model, BlogVo blogVo,
@@ -124,6 +125,7 @@ public class BlogController {
 		return "redirect:/" + authUser.getId();
 	}
 	
+	@Auth
 	@GetMapping("/admin/category")
 	public String adminCategory(Model model,@ModelAttribute @AuthUser UserVo authUser) {
 		BlogVo blogVo = blogService.getBlog(authUser.getId());
@@ -134,6 +136,7 @@ public class BlogController {
 		return "blog/blog-admin-category";
 	}
 	
+	@Auth
 	@PostMapping("/admin/category")
 	public String adminCategory(Model model, CategoryVo categoryVo,
 			@ModelAttribute @AuthUser UserVo authUser) {
@@ -143,17 +146,21 @@ public class BlogController {
 		return "redirect:/" + authUser.getId() + "/admin/category";
 	}
 	
+	@Auth
 	@DeleteMapping("/admin/category/{no}")
 	public String adminCategory(Model model,
 			@PathVariable(value="no") Long no,
 			@ModelAttribute @AuthUser UserVo authUser) {
 		
-		categoryService.deleteCategory(authUser.getId(),no);
-		
+		List<PostVo> postList = postService.getAllByCategoryNo(authUser.getId(), no);
+	
+		if(postList.isEmpty()) {
+			categoryService.deleteCategory(authUser.getId(),no);
+		}
 		return "redirect:/" + authUser.getId() + "/admin/category";
 	}
 	
-
+	@Auth
 	@GetMapping("/admin/write")
 	public String adminWrite(Model model,
 			@ModelAttribute @AuthUser UserVo authUser) {
@@ -165,6 +172,7 @@ public class BlogController {
 		return "blog/blog-admin-write";
 	}
 	
+	@Auth
 	@PostMapping("/admin/write")
 	public String adminWrite(Model model,PostVo postVo,
 			@ModelAttribute @AuthUser UserVo authUser) {
