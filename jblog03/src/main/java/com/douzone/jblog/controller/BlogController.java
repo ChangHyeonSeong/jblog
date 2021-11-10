@@ -48,7 +48,13 @@ public class BlogController {
 		if(blogId == null) {
 			return "redirect:/";
 		}
+		
 		BlogVo blogVo = blogService.getBlog(blogId);
+		
+		//블로그아이디존재하는지확인
+		if(blogVo == null){
+			return "redirect:/";
+		}
 		model.addAttribute("blogVo", blogVo);
 		model.addAttribute("blogId", blogId);
 		
