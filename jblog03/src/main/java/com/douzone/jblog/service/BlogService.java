@@ -2,6 +2,8 @@ package com.douzone.jblog.service;
 
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,10 @@ public class BlogService {
 
 	public boolean updateBlog(BlogVo blogVo) {
 		return blogRepository.update(blogVo);
+	}
+
+	public List<BlogVo> getAll() {
+		return blogRepository.findAll();
 	}
 
 	

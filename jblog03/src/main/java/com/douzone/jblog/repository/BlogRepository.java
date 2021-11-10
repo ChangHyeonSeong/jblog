@@ -1,10 +1,10 @@
 package com.douzone.jblog.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.douzone.jblog.vo.BlogVo;
 
 @Repository
@@ -24,6 +24,10 @@ public class BlogRepository {
 
 	public boolean update(BlogVo blogVo) {
 		return sqlSession.update("blog.update", blogVo) == 1;
+	}
+
+	public List<BlogVo> findAll() {
+		return sqlSession.selectList("blog.findAll");
 	}
 
 }

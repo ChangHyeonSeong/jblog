@@ -8,6 +8,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>JBlog</title>
 <Link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jblog.css">
+<style type="text/css">
+
+table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  border: 3px solid #3879D9;
+}
+
+caption { font-weight: bold }
+
+th, td {
+  padding: 20px;
+}
+
+div#img			{ background-color:#F9F9F9; margin:0 0 0 10px }
+div#img  img	{ width:80px }
+</style>
 </head>
 <body>
 	<div class="center-content">
@@ -24,6 +42,32 @@
 				<input type="radio" name="which" value="blog-user"> <label>블로거</label>
 			</fieldset>
 		</form>
+		
+		<table>
+            <caption>블로그 목록</caption>
+            <tr>
+            	<th>프로필</th>
+                <th>블로그제목</th>
+                <th>ID</th>
+            </tr>
+            <c:forEach items="${blogList }" var="blogVo">
+	            <tr>
+	                <td>
+	                	<div id="img">
+		                	<a href="${pageContext.request.contextPath}/${blogVo.id }">
+		               			<img src="${pageContext.request.contextPath}${blogVo.logo }">
+		                	</a>
+	                	</div>
+	                </td>
+	                <td>
+		                <a href="${pageContext.request.contextPath}/${blogVo.id }">
+		                	${blogVo.title }
+		                </a>
+	                </td>
+	                <td>${blogVo.id }</td>
+	            </tr>
+            </c:forEach>
+        </table>
 	</div>
 </body>
 </html>

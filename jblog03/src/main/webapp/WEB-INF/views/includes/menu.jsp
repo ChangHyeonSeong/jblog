@@ -5,6 +5,7 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <ul class="menu">
+	<li><a href="${pageContext.request.contextPath}/main">메인</a></li>
 	<c:choose>
 		<c:when test="${empty authUser }">
 			<li><a href="${pageContext.request.contextPath}/user/login">로그인</a></li>
