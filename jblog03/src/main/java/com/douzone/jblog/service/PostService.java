@@ -14,6 +14,9 @@ public class PostService {
 	private PostRepository postRepository;
 
 	public boolean addPost(PostVo postVo) {
+		if(postVo != null && (postVo.getTitle().equals("") || postVo.getContents().equals("") ) ) {
+			return false;
+		}
 		return postRepository.insert(postVo);
 	}
 

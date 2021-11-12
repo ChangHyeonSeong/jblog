@@ -64,10 +64,7 @@ public class BlogController {
 
 		//id 만 넘어올때
 		if (catergoryNo == null) {
-			//List<PostVo> postAllList = postService.getAll(blogId);
-			PostVo lastPostVo = postService.getLastPostVo();
-			
-			List<PostVo> postList = postService.getAllByCategoryNo(blogId, lastPostVo.getCategoryNo());
+			List<PostVo> postList = postService.getAll(blogId);
 			if(postList.size() == 0) {
 				return "blog/blog-main";
 			}
@@ -146,6 +143,7 @@ public class BlogController {
 	@PostMapping("/admin/category")
 	public String adminCategory(Model model, CategoryVo categoryVo,
 			@ModelAttribute @AuthUser UserVo authUser) {
+		categoryVo.setBlogId(authUser.getId());
 		
 		categoryService.addCategory(categoryVo);
 		
@@ -157,9 +155,10 @@ public class BlogController {
 	public String adminCategory(Model model,
 			@PathVariable(value="no") Long no,
 			@ModelAttribute @AuthUser UserVo authUser) {
-		
+		System.out.println("delete to Controller");
 		List<PostVo> postList = postService.getAllByCategoryNo(authUser.getId(), no);
-	
+		
+		//post가 없다면
 		if(postList.isEmpty()) {
 			categoryService.deleteCategory(authUser.getId(),no);
 		}
@@ -183,7 +182,10 @@ public class BlogController {
 	public String adminWrite(Model model,PostVo postVo,
 			@ModelAttribute @AuthUser UserVo authUser) {
 		
-		postService.addPost(postVo);
+		boolean success = postService.addPost(postVo);
+		if(success) {
+			return "redirect:/" + authUser.getId();
+		}
 		
 		BlogVo blogVo = blogService.getBlog(authUser.getId());
 		model.addAttribute("blogVo", blogVo);

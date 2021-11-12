@@ -12,14 +12,19 @@ select c.no, c.name, c.desc, c.blog_id as blogId, (select count(*) from post whe
 from category c;
 
 select * from user;
-delete from user where id = 'bolt';
-
 select * from blog;
+select * from category;
+select * from post;
+delete from user where id = ' Feynman';
+delete from blog where id = ' Feynman';
+delete from category where no = 4;
+delete from post where no = 4;
 
 
 desc category;
 select c.no, c.name, c.desc, c.blog_id as blogId 
-from category c;
+from category c
+order by c.no desc;
 
 insert into category values(null, 'test', 'java', 'nami');
 delete from category where no = 4;

@@ -19,11 +19,15 @@ public class CategoryService {
 	}
 
 	public boolean addCategory(CategoryVo categoryVo) {
+		if(categoryVo != null && categoryVo.getName().equals("") ) {
+			return false;
+		}
 		return categoryRepository.insert(categoryVo);
 	}
 
 	public boolean deleteCategory(String id, Long no) {
 		List<CategoryVo> list = getCategory(id);
+		//리스트가 하나 있다면
 		if(list.size() == 1) {
 			return false;
 		}
