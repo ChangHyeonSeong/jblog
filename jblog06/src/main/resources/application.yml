@@ -18,6 +18,10 @@ spring:
       view:
          prefix: /WEB-INF/views/
          suffix: .jsp
+      # HiddenHttpMethodFilter
+      hiddenmethod:
+         filter:
+            enabled: true
 
    # message resource(Internationalization)
    messages:
