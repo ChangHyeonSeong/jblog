@@ -18,7 +18,7 @@ select * from post;
 delete from user where id = ' Feynman';
 delete from blog where id = ' Feynman';
 delete from category where no = 4;
-delete from post where no = 4;
+delete from post where no = 12;
 
 
 desc category;
