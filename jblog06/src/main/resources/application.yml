@@ -49,10 +49,10 @@ spring:
       
    # datasource
    datasource:
-      username: webdb
-      password: webdb
+      username: jblog
+      password: jblog
       driver-class-name: org.mariadb.jdbc.Driver
-      url: jdbc:mysql://127.0.0.1:3306/webdb?characterEncoding=utf8
+      url: jdbc:mysql://127.0.0.1:3306/jblog?characterEncoding=utf8
       hikari:
          minimum-idle: 10
          maximum-pool-size: 20
@@ -70,7 +70,7 @@ spring:
       username: webdb
       password: blahblha#!@0909#@!
       driver-class-name: org.mariadb.jdbc.Driver
-      url: jdbc:mysql://227.8.9.10:3306/webdb?characterEncoding=utf8
+      url: jdbc:mysql://227.8.9.10:3306/jblog?characterEncoding=utf8
       hikari:
          minimum-idle: 100
          maximum-pool-size: 200
@@ -81,7 +81,7 @@ spring:
 server:
    port: 8888
    servlet:
-     context-path: /mysite06
+     context-path: /jblog06
      encoding:
         charset: utf-8
         enabled: true
