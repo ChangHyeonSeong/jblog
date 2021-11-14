@@ -4,6 +4,7 @@ import javax.servlet.Filter;
 import javax.servlet.ServletRegistration.Dynamic;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.douzone.jblog.config.AppConfig;
@@ -30,7 +31,7 @@ public class JblogWebApplicationInitializer extends AbstractAnnotationConfigDisp
 
 	@Override
 	protected Filter[] getServletFilters() {
-		return new Filter[] {new CharacterEncodingFilter("UTF-8", false)};
+		return new Filter[] {new CharacterEncodingFilter("UTF-8", false), new HiddenHttpMethodFilter()};
 	}
 
 	// for 404 error page ??
