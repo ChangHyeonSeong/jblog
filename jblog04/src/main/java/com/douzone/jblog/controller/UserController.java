@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.douzone.jblog.service.BlogService;
 import com.douzone.jblog.service.CategoryService;
@@ -59,5 +60,15 @@ public class UserController {
 	public String login() {
 		return "user/login";
 	} 
+	
+	@RequestMapping(value="/auth", method=RequestMethod.POST)
+	public void auth() {
+	    System.out.println("auth() called ....");
+	}
+	    
+	@RequestMapping(value="/logout", method=RequestMethod.GET)
+	public void logout() {
+		System.out.println("logout() called ....");
+	}
 	
 }

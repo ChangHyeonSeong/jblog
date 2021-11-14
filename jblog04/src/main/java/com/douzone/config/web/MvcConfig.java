@@ -35,11 +35,6 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 		return viewResolver;
 	}
 
-	// Default Servlet Handler
-	@Override
-	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-		configurer.enable();
-	}
 
 	// Message Converters
 	@Bean
@@ -66,4 +61,9 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 		converters.add(mappingJackson2HttpMessageConverter());
 	}
 
+	// Default Servlet Handler
+	@Override
+	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+		configurer.enable();
+	}
 }
