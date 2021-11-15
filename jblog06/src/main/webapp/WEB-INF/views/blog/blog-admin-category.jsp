@@ -9,35 +9,36 @@
 <title>JBlog</title>
 <Link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jblog.css">
 <style type="text/css">
-input.btn-delete {
-	  background-image: url('${pageContext.request.contextPath}/assets/images/delete.jpg');
-    background-position:  0px 0px;
-    background-repeat: no-repeat;
-    font-size: 0;
-	  overflow: hidden;
-    width: 13px;
-    height: 13px;
-    border: 0px;
- 	  cursor:pointer;
- 	  outline: 0;
+button.btn-delete {
+	  
+    width: 18px;
+    height: 18px;
+   
+ 	 
 }
 </style>
 </head>
 <script src="${pageContext.request.contextPath }/assets/js/jquery/jquery-3.6.0.js"></script>
 <script>
 $(function(){
-	$(".form-delete").submit(function(event) {
-		event.preventDefault();
-		var _this = this;
+	//$(".form-delete").submit(function(event) {
+	$(".btn-delete").click(function(event) {
+		//event.preventDefault();
+		//var _this = this;
 		var id = "${authUser.id }";
-		var no = this.elements[0].value; //카테고리 넘버 가져오기
+		//var no = this.elements[0].value; //카테고리 넘버 가져오기
+		console.log(this);
+		var tr = $(this).parent().parent();
+		var no = $(this).val(); //카테고리 넘버 가져오기
+		console.log("no : " +  no );
+		var url = "${pageContext.request.contextPath }/blog/api/check?id=" + id + "&no=" + no;
 		if(id == '') {
 			return;
 		}
 		
 		console.log(id);
 		$.ajax({
-			url: "${pageContext.request.contextPath }/blog/api/check?id=" + id + "&no=" + no,
+			url: url,
 			type: "get",
 			dataType: 'json',
 			error: function(xhr, status, e) {
@@ -59,7 +60,32 @@ $(function(){
 					return;
 				}
 				
-				_this.submit();
+				//삭제가 가능한경우 
+				$.ajax({
+					url: "${pageContext.request.contextPath }/blog/api/category/" + no ,
+					type: 'delete',
+					dataType: 'json',
+					data: 'id=' + id,
+					success: function(response) {
+						console.log(response);
+						
+						// 삭제가 안된 경우						
+						if(response.data == false) {
+							console.log("delete fail : " + response.data );
+							return;
+						}
+						
+						// 삭제가 된 경우
+						tr.remove();
+						
+						var tdIndex = $(".td-index");
+						console.log(tdIndex);
+						for(var i =tdIndex.length ; i > 0 ;i--){
+							tdIndex[i].innerText = i;
+						}
+					}
+				});
+				//_this.submit();
 			}
 		});		
 	});	
@@ -81,17 +107,20 @@ $(function(){
 		      		</tr>
 					<c:forEach items='${list }' var='categoryVo' varStatus='status'>
 						<tr>
-							<td>${list.size() - status.index }</td>
+							<td class='td-index'>${list.size() - status.index }</td>
 							<td>${categoryVo.name }</td>
 							<td>${categoryVo.postCount }</td>
 							<td>${categoryVo.desc }</td>
 							<td>
-								<form class="form-delete" method="post" 
+								<!-- <form class="form-delete" method="post" 
 								      action="${pageContext.request.contextPath}/${authUser.id }/admin/category/${categoryVo.no }">
 									<input type="hidden" name="no" value="${categoryVo.no }" >
 									<input type="hidden" name="_method" value="DELETE" >
 									<input class="btn-delete" type="submit" value="삭제">	
-								</form>
+								</form> -->
+								<button class="btn-delete" value="${categoryVo.no }">
+									<img src="${pageContext.request.contextPath}/assets/images/delete.jpg">
+								</button>
 							</td>
 						</tr>
 					</c:forEach>					  
